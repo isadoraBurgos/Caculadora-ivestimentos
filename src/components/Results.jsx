@@ -19,13 +19,23 @@ export default function Results({ input }) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>{resultsData[0].year}</td>
-          <td>{formatter.format(resultsData[0].valueEndOfYear)}</td>
-          <td>{formatter.format(resultsData[0].interest)}</td>
-          <td>{formatter.format(resultsData[0].interest)}</td>
-          <td>{formatter.format(initialInvestment + resultsData[0].annualInvestment)}</td>
-        </tr>
+        {resultsData.map((yearData) => {
+          const totalInterest =
+            yearData.valueEndOfYear -
+            yearData.annualInvestment * yearData.year -
+            initialInvestment;
+          const totalAmountInvested = yearData.valueEndOfYear - totalInterest;
+
+          return (
+            <tr key={yearData.year}>
+              <td>{yearData.year}</td>
+              <td>{formatter.format(yearData.valueEndOfYear)}</td>
+              <td>{formatter.format(yearData.interest)}</td>
+              <td>{formatter.format(totalInterest)}</td>
+              <td>{formatter.format(totalAmountInvested)}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
